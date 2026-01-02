@@ -18,6 +18,7 @@ export const useAuth = () => {
   const fetchProfile = async () => {
     try {
       const profile = await authApi.getProfile();
+
       setUser(profile);
       setIsAuthenticated(true);
     } catch (error) {

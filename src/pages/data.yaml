@@ -1,0 +1,11 @@
+data 
+{data: Array(3), links: {…}, meta: {…}}
+data
+: 
+(3) [{…}, {…}, {…}]
+links
+: 
+{first: 'http://127.0.0.1:8000/api/posts?page=1', last: 'http://127.0.0.1:8000/api/posts?page=1', prev: null, next: null}
+meta
+: 
+{current_page: 1, from: 1, last_page: 1, links: Array(3), path: 'http://127.0.0.1:8000/api/posts', …}

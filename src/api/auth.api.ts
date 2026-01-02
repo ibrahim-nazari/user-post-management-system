@@ -23,21 +23,21 @@ export interface AuthResponse {
 
 export const authApi = {
   login: async (credentials: LoginCredentials): Promise<AuthResponse> => {
-    const response = await apiClient.post("/auth/login", credentials);
+    const response = await apiClient.post("/login", credentials);
     return response.data;
   },
 
   signup: async (data: SignupData): Promise<AuthResponse> => {
-    const response = await apiClient.post("/auth/signup", data);
+    const response = await apiClient.post("/register", data);
     return response.data;
   },
 
   logout: async (): Promise<void> => {
-    await apiClient.post("/auth/logout");
+    await apiClient.post("/logout");
   },
 
   getProfile: async (): Promise<AuthResponse["user"]> => {
-    const response = await apiClient.get("/auth/profile");
+    const response = await apiClient.get("/me");
     return response.data;
   },
 };

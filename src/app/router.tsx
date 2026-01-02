@@ -11,7 +11,13 @@ import CreatePostPage from "../pages/CreatePostPage";
 import EditPostPage from "../pages/EditPostPage";
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
+    // Show loading spinner or skeleton while checking authentication
+    return <div>Loading...</div>; // Or your preferred loading component
+  }
+
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
 };
 

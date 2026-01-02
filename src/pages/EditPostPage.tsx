@@ -3,16 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { usePosts } from "../hooks/usePosts";
 import PostForm from "../components/posts/PostForm";
 import Button from "../components/ui/Button";
+import { usePost } from "@/hooks/usePost";
 
 const EditPostPage = () => {
   const { id } = useParams<{ id: string }>();
+  const { data, isLoading, error } = usePost(Number(id));
+  const post = data?.data;
   const navigate = useNavigate();
-  const {
-    data: posts,
-    isLoading,
-    error,
-    updatePost,
-  } = usePosts(1, 1, "", parseInt(id || "0"));
+  const { updatePost } = usePosts(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -24,7 +22,9 @@ const EditPostPage = () => {
   const handleSubmit = async (formData: any) => {
     setIsSubmitting(true);
     try {
-      await updatePost(parseInt(id || "0"), formData);
+      console.log("id", id);
+
+      await updatePost({ id: Number(id), data: formData });
       navigate(`/posts/${id}`);
     } catch (err) {
       console.error("Failed to update post:", err);
@@ -41,7 +41,7 @@ const EditPostPage = () => {
     );
   }
 
-  if (!posts || posts.posts.length === 0) {
+  if (!post) {
     return null;
   }
 
@@ -57,7 +57,7 @@ const EditPostPage = () => {
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Edit Post</h2>
           <PostForm
-            initialData={posts.posts[0]}
+            initialData={post}
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
           />

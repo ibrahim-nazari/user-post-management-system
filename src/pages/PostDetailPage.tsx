@@ -1,15 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { usePosts } from "../hooks/usePosts";
+
 import Button from "../components/ui/Button";
+import { usePost } from "@/hooks/usePost";
 
 const PostDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const {
-    data: posts,
-    isLoading,
-    error,
-  } = usePosts(1, 1, "", parseInt(id || "0"));
+  const { data, isLoading, error } = usePost(Number(id));
+  const post = data?.data;
 
   if (isLoading) {
     return (
@@ -19,15 +17,13 @@ const PostDetailPage = () => {
     );
   }
 
-  if (error || !posts || posts.posts.length === 0) {
+  if (error || !post) {
     return (
       <div className="min-h-screen bg-gray-50 p-8">
         <div className="text-red-600">Post not found</div>
       </div>
     );
   }
-
-  const post = posts.posts[0];
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">

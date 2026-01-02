@@ -2,14 +2,25 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePosts } from "../hooks/usePosts";
 import PostsTable from "../components/posts/PostsTable";
-import Pagination from "../components/Pagination";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
+import { Pagination } from "@/components/Pagination";
 
 const PostsPage = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const { data, isLoading, error } = usePosts(page, 10, search);
+  const limit = 5;
+  const {
+    posts,
+    isLoading,
+    hasNextPage,
+    hasPreviousPage,
+    currentPage,
+    totalPages,
+    totalItems,
+    pagination,
+    error,
+  } = usePosts(page, limit, search);
   const navigate = useNavigate();
 
   const handlePostClick = (id: number) => {
@@ -24,6 +35,13 @@ const PostsPage = () => {
     return (
       <div className="min-h-screen bg-gray-50 p-8">
         <div className="text-red-600">Error loading posts</div>
+      </div>
+    );
+  }
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     );
   }
@@ -59,16 +77,22 @@ const PostsPage = () => {
             ) : (
               <>
                 <PostsTable
-                  posts={data?.posts || []}
+                  posts={posts || []}
                   onPostClick={handlePostClick}
                   onEditClick={handleEditClick}
                 />
 
-                <Pagination
-                  currentPage={page}
-                  totalPages={data?.totalPages || 1}
-                  onPageChange={setPage}
-                />
+                {/* Pagination */}
+                <div className="border-t border-gray-200 dark:border-gray-800 px-6 py-4">
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    totalItems={totalItems}
+                    pageSize={limit}
+                    onPageChange={setPage}
+                    className="mt-4"
+                  />
+                </div>
               </>
             )}
           </div>

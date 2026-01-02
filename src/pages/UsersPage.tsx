@@ -57,11 +57,11 @@ const UsersPage = () => {
                   onEditClick={handleEditClick}
                 />
 
-                <Pagination
+                {/* <Pagination
                   currentPage={page}
                   totalPages={data?.totalPages || 1}
                   onPageChange={setPage}
-                />
+                /> */}
               </>
             )}
           </div>
